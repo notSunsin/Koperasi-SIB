@@ -2,7 +2,13 @@
 
 @section('content')
     <h2>Data Pegawai</h2>
-    <button class="btn btn-add">+ Tambah Pegawai</button>
+    <a href="{{ route('pegawai.create') }}" class="btn btn-add">+ Tambah Pegawai</a>
+
+    @if(session('success'))
+        <div style="background: #d1e7dd; color:#0f5132; padding:10px; margin-top:10px; border-radius:5px;">
+            {{ session('success') }}
+        </div>
+    @endif
 
     <table class="table">
         <thead>
@@ -14,18 +20,18 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>Ahmad Yusuf</td>
-                <td>Laki-laki</td>
-                <td>Manager</td>
-                <td>ahmad@example.com</td>
-            </tr>
-            <tr>
-                <td>Siti Aminah</td>
-                <td>Perempuan</td>
-                <td>Staf</td>
-                <td>siti@example.com</td>
-            </tr>
+            @forelse($pegawai as $p)
+                <tr>
+                    <td>{{ $p->name }}</td>
+                    <td>{{ $p->jenis_kelamin ?? '-' }}</td>
+                    <td>{{ $p->jabatan ?? '-' }}</td>
+                    <td>{{ $p->email }}</td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="4" style="text-align:center;">Belum ada data pegawai.</td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
 @endsection

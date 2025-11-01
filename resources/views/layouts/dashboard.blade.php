@@ -76,7 +76,7 @@
         <h2>Koperasi</h2>
         <a href="{{ route('dashboard') }}">🏠 Beranda</a>
         <a href="{{ route('dashboard.pegawai') }}">👨‍💼 Pegawai</a>
-        <a href="{{ route('dashboard.anggota') }}">👥 Anggota</a>
+        <a href="{{ route('dashboard.nasabah') }}" class="{{ request()->is('dashboard/nasabah') ? 'active' : '' }}">👥 Nasabah</a>
         <a href="{{ route('dashboard.simpanan') }}">💰 Simpanan</a>
         <a href="{{ route('dashboard.laporan') }}">📄 Laporan</a>
     </div>

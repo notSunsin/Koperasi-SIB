@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SimpananController;
 use App\Http\Controllers\PinjamanController;
+use App\Http\Controllers\PegawaiController;
+use App\Http\Controllers\NasabahController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 
 
@@ -48,6 +50,19 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});
+
+Route::middleware(['auth'])->prefix('dashboard')->group(function () {
+    Route::get('/', fn() => view('dashboard.index'))->name('dashboard');
+    Route::get('/pegawai', [PegawaiController::class, 'index'])->name('dashboard.pegawai');
+    Route::get('/pegawai/tambah', [PegawaiController::class, 'create'])->name('pegawai.create');
+    Route::post('/pegawai/store', [PegawaiController::class, 'store'])->name('pegawai.store');
+});
+
+Route::middleware(['auth'])->prefix('dashboard')->group(function () {
+    Route::get('/nasabah', [NasabahController::class, 'index'])->name('dashboard.nasabah');
+    Route::get('/nasabah/tambah', [NasabahController::class, 'create'])->name('nasabah.create');
+    Route::post('/nasabah/store', [NasabahController::class, 'store'])->name('nasabah.store');
 });
 
 require __DIR__.'/auth.php';
