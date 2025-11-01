@@ -104,6 +104,9 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:nasabah'])->prefix('nasabah')->group(function () {
         Route::get('/', fn() => view('nasabah.home'))->name('nasabah.home');
         Route::get('/pinjaman', [PinjamanController::class, 'index'])->name('nasabah.pinjaman');
+        Route::get('/simpanan', [App\Http\Controllers\SimpananController::class, 'index'])->name('nasabah.simpanan');
+        Route::get('/laporan', [App\Http\Controllers\LaporanNasabahController::class, 'index'])->name('nasabah.laporan');
+        Route::get('/laporan/download', [App\Http\Controllers\LaporanNasabahController::class, 'download'])->name('nasabah.laporan.download');
     });
 });
 

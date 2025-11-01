@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrasi - Koperasi Simpan Pinjam</title>
+    <title>Registrasi Nasabah - Koperasi Simpan Pinjam</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -32,7 +32,7 @@
             margin-bottom: 5px;
             color: #555;
         }
-        input, select {
+        input {
             width: 100%;
             padding: 10px;
             margin-bottom: 15px;
@@ -68,7 +68,7 @@
 <body>
 
 <div class="register-container">
-    <h2>Registrasi Akun</h2>
+    <h2>Registrasi Nasabah</h2>
 
     <form method="POST" action="{{ route('register') }}">
         @csrf
@@ -76,7 +76,7 @@
         <label for="name">Nama Lengkap</label>
         <input type="text" id="name" name="name" value="{{ old('name') }}" required>
 
-        <label for="email">Username / Email</label>
+        <label for="email">Email</label>
         <input type="email" id="email" name="email" value="{{ old('email') }}" required>
 
         <label for="password">Password</label>
@@ -85,28 +85,8 @@
         <label for="password_confirmation">Konfirmasi Password</label>
         <input type="password" id="password_confirmation" name="password_confirmation" required>
 
-            <label for="role">Daftar Sebagai</label>
-            <select name="role" id="role" required onchange="toggleJabatan()">
-                <option value="nasabah" selected>Nasabah</option>
-            </select>
-
-            <div id="jabatanField" style="display:none;">
-                <label for="jabatan">Jabatan</label>
-                <select name="jabatan" id="jabatan">
-                    <option value="">-- Pilih Jabatan --</option>
-                    <option value="Staff">Staff</option>
-                    <option value="Manager">Manager</option>
-                    <option value="HRD">HRD</option>
-                </select>
-            </div>
-
-            <script>
-            function toggleJabatan() {
-                const role = document.getElementById('role').value;
-                const jabatanField = document.getElementById('jabatanField');
-                jabatanField.style.display = (role === 'admin') ? 'block' : 'none';
-            }
-            </script>
+        {{-- Role otomatis sebagai nasabah --}}
+        <input type="hidden" name="role" value="nasabah">
 
         <button type="submit" class="register-btn">Daftar</button>
 

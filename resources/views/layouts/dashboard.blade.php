@@ -3,108 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Koperasi Simpan Pinjam - Dashboard</title>
+    <title>Koperasi Simpan Pinjam</title>
     <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f5f6fa;
+        * {
+            box-sizing: border-box;
         }
-
-        /* Layout utama */
-        .container {
-            display: flex;
-            height: 100vh;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 230px;
-            background-color: #0d6efd;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-        }
-
-        .sidebar h2 {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .sidebar a {
-            color: white;
-            text-decoration: none;
-            padding: 10px 15px;
-            margin-bottom: 5px;
-            border-radius: 5px;
-            display: block;
-        }
-
-        .sidebar a:hover,
-        .sidebar a.active {
-            background-color: #0b5ed7;
-        }
-
-        /* Area Konten */
-        .content-wrapper {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Header */
-        .header {
-            background-color: white;
-            padding: 15px 25px;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        /* Tombol Logout */
-        .logout-btn {
-            background-color: #dc3545;
-            color: white;
-            border: none;
-            padding: 12px 22px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        .logout-btn:hover {
-            background-color: #b02a37;
-        }
-
-        /* Isi Konten */
-        .content {
-            flex: 1;
-            padding: 25px;
-            overflow-y: auto;
-        }
-
-        /* Tabel dan tombol */
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            margin-top: 15px;
-        }
-
-        .table th, .table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        .table th {
-            background-color: #f0f0f0;
-        }
-
+        /* === Tombol Umum === */
         .btn {
             padding: 8px 14px;
             border: none;
@@ -116,58 +20,243 @@
         .btn-add { background-color: #198754; }
         .btn-edit { background-color: #ffc107; color: black; }
         .btn-delete { background-color: #dc3545; }
+
+        /* Tombol logout (sudah ada, kita rapikan saja) */
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .logout-btn:hover {
+            background: #b02a37;
+        }
+
+        /* Tombol toggle sidebar */
+        .toggle-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 18px;
+            transition: background 0.2s;
+        }
+        .toggle-btn:hover {
+            background: #0056b3;
+        }
+
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            background: #f4f6f8;
+            overflow: hidden;
+        }
+
+        /* === Sidebar === */
+        .sidebar {
+            width: 220px;
+            background-color: #007bff;
+            color: #fff;
+            transition: width 0.3s ease;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar.hidden {
+            width: 70px;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin: 15px 0;
+            font-size: 18px;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar.hidden h2 {
+            opacity: 0;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex: 1;
+        }
+
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 15px;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+
+        .sidebar-menu li a:hover {
+            background-color: #0056b3;
+        }
+
+        .sidebar.hidden .sidebar-menu li a {
+            justify-content: center;
+        }
+
+        .sidebar.hidden .sidebar-menu li a span {
+            display: none;
+        }
+
+        /* === Main Content === */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            padding: 10px 15px;
+            border-bottom: 1px solid #ddd;
+            flex-shrink: 0;
+        }
+
+        .toggle-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 18px;
+        }
+
+        .toggle-btn:hover {
+            background: #0056b3;
+        }
+
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background: #b02a37;
+        }
+
+        /* === Content Area (scrollable) === */
+        .content-area {
+            padding: 20px;
+            overflow-y: auto; /* ✅ biar tabel tidak ketutup */
+            flex: 1;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background: #f0f0f0;
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <h2>Koperasi</h2>
-
-        @if(Auth::user()->role === 'admin')
-            <a href="{{ route('dashboard') }}">🏠 Beranda</a>
-            <a href="{{ route('dashboard.pegawai') }}">👨‍💼 Pegawai</a>
-            <a href="{{ route('dashboard.nasabah') }}">👥 Nasabah</a>
-            <a href="{{ route('dashboard.simpanan') }}">💰 Simpanan</a>
-            <a href="{{ route('dashboard.pinjaman') }}">💳 Pinjaman</a>
-            <a href="{{ route('dashboard.laporan') }}">📄 Laporan</a>
-        @elseif(Auth::user()->role === 'nasabah')
-            <a href="{{ route('nasabah.home') }}">🏠 Beranda</a>
-            <a href="{{ route('nasabah.pinjaman') }}">💳 Pinjaman</a>
-        @endif
+    {{-- === Sidebar === --}}
+    <div class="sidebar" id="sidebar">
+        <h2>{{ Auth::user()->role === 'admin' ? 'Admin' : 'Nasabah' }}</h2>
+        <ul class="sidebar-menu">
+            @if(Auth::user()->role === 'admin')
+                <li><a href="{{ route('dashboard') }}">🏠 <span>Beranda</span></a></li>
+                <li><a href="{{ route('dashboard.pegawai') }}">👨‍💼 <span>Pegawai</span></a></li>
+                <li><a href="{{ route('dashboard.nasabah') }}">👥 <span>Nasabah</span></a></li>
+                <li><a href="{{ route('dashboard.simpanan') }}">🏦 <span>Simpanan</span></a></li>
+                <li><a href="{{ route('dashboard.pinjaman') }}">💰 <span>Pinjaman</span></a></li>
+                <li><a href="{{ route('dashboard.laporan') }}">📊 <span>Laporan</span></a></li>
+            @else
+                <li><a href="{{ route('nasabah.home') }}">🏠 <span>Beranda</span></a></li>
+                <li><a href="{{ route('nasabah.simpanan') }}">🏦 <span>Simpanan Saya</span></a></li>
+                <li><a href="{{ route('nasabah.pinjaman') }}">💰 <span>Pinjaman Saya</span></a></li>
+                <li><a href="{{ route('nasabah.laporan') }}">📊 <span>Laporan Saya</span></a></li>
+            @endif
+        </ul>
     </div>
 
-
-
-    <!-- Area Konten -->
-    <div class="content-wrapper">
-        <!-- Header -->
-        <div class="header">
-            <div style="margin-right: 20px; font-weight: bold; color:#333;">
-                👤 {{ Auth::user()->name }}
-            </div>
-            <form method="POST" action="{{ route('logout') }}" id="logoutForm">
+    {{-- === Main Content === --}}
+    <div class="main-content" id="mainContent">
+        <div class="topbar">
+            <button class="toggle-btn" id="toggleBtn">☰</button>
+            <form id="logoutForm" action="{{ route('logout') }}" method="POST" style="margin:0;">
                 @csrf
-                <button type="button" class="logout-btn" onclick="confirmLogout()">🚪 Logout</button>
+                <button type="button" id="logoutBtn" class="logout-btn">Logout</button>
             </form>
+
         </div>
 
+        <div class="content-area">
+            {{-- ✅ Pesan sukses global --}}
+            @if(session('status'))
+                <div style="background:#d1e7dd;color:#0f5132;padding:10px;margin-bottom:10px;border-radius:5px;">
+                    {{ session('status') }}
+                </div>
+            @endif
 
-        <!-- Isi Dashboard -->
-        <div class="content">
+            {{-- ✅ Semua tabel & konten tetap tampil di sini --}}
             @yield('content')
         </div>
     </div>
-</div>
 
-<script>
-function confirmLogout() {
-    if (confirm('ente yakin mau logout?')) {
-        document.getElementById('logoutForm').submit();
-    }
-}
-</script>
+    {{-- === SCRIPT Hide/Show Sidebar === --}}
+        <script>
+            const sidebar = document.getElementById('sidebar');
+            const toggleBtn = document.getElementById('toggleBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const logoutForm = document.getElementById('logoutForm');
+
+            // === Sidebar hide/show ===
+            toggleBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('hidden');
+                localStorage.setItem('sidebarHidden', sidebar.classList.contains('hidden'));
+            });
+
+            document.addEventListener('DOMContentLoaded', () => {
+                const hidden = localStorage.getItem('sidebarHidden') === 'true';
+                if (hidden) sidebar.classList.add('hidden');
+            });
+
+            // === Konfirmasi logout ===
+            logoutBtn.addEventListener('click', () => {
+                if (confirm('Ente yakin mau logout?')) {
+                    logoutForm.submit();
+                }
+            });
+        </script>
+
+
 
 </body>
 </html>

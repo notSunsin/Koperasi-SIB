@@ -34,21 +34,22 @@ public function store(Request $request)
         'name' => ['required', 'string', 'max:255'],
         'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
         'password' => ['required', 'confirmed', 'min:8'],
-        'role' => ['required', 'in:admin,nasabah'],
-        'jabatan' => ['nullable', 'string', 'max:255'],
     ]);
 
     $user = User::create([
         'name' => $request->name,
         'email' => $request->email,
         'password' => Hash::make($request->password),
-        'role' => $request->role,
-        'jabatan' => $request->role === 'admin' ? $request->jabatan : null,
+        'role' => 'nasabah', // ✅ otomatis jadi nasabah
     ]);
 
+    // ✅ Login otomatis setelah registrasi
     Auth::login($user);
 
-    return redirect()->route('dashboard');
+    // ✅ Arahkan ke dashboard nasabah
+    return redirect()->route('nasabah.home')->with('status', 'Selamat datang di Koperasi! Akun Anda telah berhasil dibuat.');
+
 }
+
 
 }

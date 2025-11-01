@@ -4,14 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Models\Simpanan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class SimpananController extends Controller
 {
     public function index()
     {
-        $user = auth()->user();
-        $data = $user->role === 'admin' ? Simpanan::all() : $user->simpanan;
-        return view('simpanan.index', compact('data'));
+        $user = Auth::user();
+
+        if ($user->role === 'admin') {
+            // 👑 Admin: bisa melihat semua data simpanan
+            $simpanans = Simpanan::with('user')->latest()->get();
+            return view('dashboard.simpanan', compact('simpanans'));
+        } else {
+            // 👤 Nasabah: hanya melihat simpanan miliknya
+            $simpanans = Simpanan::where('user_id', $user->id)->latest()->get();
+            return view('nasabah.simpanan', compact('simpanans'));
+        }
     }
 
     public function create()

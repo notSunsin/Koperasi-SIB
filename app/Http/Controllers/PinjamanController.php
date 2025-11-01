@@ -4,35 +4,59 @@ namespace App\Http\Controllers;
 
 use App\Models\Pinjaman;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PinjamanController extends Controller
 {
+    /**
+     * Tampilkan daftar pinjaman sesuai role.
+     */
     public function index()
     {
-        $user = auth()->user();
-        $data = $user->role === 'admin' ? Pinjaman::all() : $user->pinjaman;
-        return view('pinjaman.index', compact('data'));
+        $user = Auth::user();
 
-        $pinjaman = Pinjaman::where('user_id', auth()->id())->get();
-        return view('nasabah.pinjaman', compact('pinjaman'));
+        if ($user->role === 'admin') {
+            // 👑 Admin melihat semua data pinjaman
+            $pinjamans = Pinjaman::with('user')->latest()->get();
+            return view('dashboard.pinjaman', compact('pinjamans'));
+        } else {
+            // 👤 Nasabah hanya melihat pinjaman miliknya
+            $pinjamans = Pinjaman::where('user_id', $user->id)->latest()->get();
+            return view('nasabah.pinjaman', compact('pinjamans'));
+        }
     }
 
+    /**
+     * Form tambah pinjaman (hanya admin)
+     */
     public function create()
     {
-        return view('pinjaman.create');
+        if (Auth::user()->role !== 'admin') {
+            abort(403, 'Akses ditolak.');
+        }
+
+        return view('dashboard.pinjaman-create');
     }
 
+    /**
+     * Simpan data pinjaman baru (hanya admin)
+     */
     public function store(Request $request)
     {
+        if (Auth::user()->role !== 'admin') {
+            abort(403, 'Akses ditolak.');
+        }
+
         $validated = $request->validate([
-            'jumlah' => 'required|numeric',
-            'bunga' => 'required|numeric',
-            'jangka_waktu' => 'required|integer',
+            'user_id' => 'required|exists:users,id',
+            'kode' => 'required|unique:pinjamans,kode',
+            'uraian' => 'required|string|max:255',
+            'kredit' => 'required|numeric|min:0',
+            'saldo' => 'required|numeric|min:0',
         ]);
 
-        $validated['user_id'] = auth()->id();
         Pinjaman::create($validated);
 
-        return redirect()->route('pinjamen.index')->with('success', 'Data pinjaman berhasil diajukan!');
+        return redirect()->route('dashboard.pinjaman')->with('success', 'Data pinjaman berhasil ditambahkan!');
     }
 }
