@@ -38,19 +38,30 @@ class LoginRequest extends FormRequest
      * @throws \Illuminate\Validation\ValidationException
      */
     public function authenticate(): void
-    {
-        $this->ensureIsNotRateLimited();
+{
+    $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
+    $user = \App\Models\User::where('email', $this->email)->first();
 
+    // ✅ Jika email tidak ditemukan
+        if (! $user) {
             throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
+                'email' => 'Anda belum registrasi.',
             ]);
         }
 
+        // ✅ Jika password salah
+        if (! \Illuminate\Support\Facades\Hash::check($this->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => 'Email atau password salah.',
+            ]);
+        }
+
+        // ✅ Jika sukses login
+        Auth::login($user, $this->boolean('remember'));
         RateLimiter::clear($this->throttleKey());
     }
+
 
     /**
      * Ensure the login request is not rate limited.

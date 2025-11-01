@@ -26,6 +26,12 @@
             margin-bottom: 25px;
             color: #333;
         }
+        h3 {
+            text-align: center;
+            font-style: italic;
+            font-size : 18px;
+        }
+
         label {
             display: block;
             font-weight: bold;
@@ -68,7 +74,17 @@
 <body>
 
     <div class="login-container">
-        <h2>Koperasi Simpan Pinjam</h2>
+        <h2>KoPinang</h2>
+        <h3>"Koperasi Pinjam dan Simpan Uang"</h3>
+
+    {{-- ✅ Tampilkan error --}}
+    @if ($errors->any())
+        <div style="background:#f8d7da; color:#842029; padding:10px; border-radius:5px; margin-bottom:15px;">
+            @foreach ($errors->all() as $error)
+                <div>{{ $error }}</div>
+            @endforeach
+        </div>
+    @endif
 
         <form method="POST" action="{{ route('login') }}">
             @csrf

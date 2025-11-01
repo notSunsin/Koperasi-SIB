@@ -8,7 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Simpanan extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id', 'jenis', 'jumlah', 'tanggal'];
+
+    protected $fillable = [
+        'kode',
+        'user_id',
+        'uraian',
+        'debit',
+        'saldo',
+    ];
 
     public function user()
     {

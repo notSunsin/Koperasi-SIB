@@ -7,7 +7,11 @@ use App\Http\Controllers\SimpananController;
 use App\Http\Controllers\PinjamanController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\NasabahController;
+use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\PinjamanAdminController;
+use App\Http\Controllers\SimpananAdminController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 
 
@@ -40,6 +44,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('simpanans', SimpananController::class);
     Route::resource('pinjamen', PinjamanController::class);
 });
+
+Route::middleware(['auth', 'role:admin'])->prefix('dashboard')->group(function () {
+    Route::get('/laporan', [LaporanController::class, 'index'])->name('dashboard.laporan');
+});
+
 Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.home');
     Route::get('/pegawai', fn() => view('dashboard.pegawai'))->name('dashboard.pegawai');
@@ -63,6 +72,39 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::get('/nasabah', [NasabahController::class, 'index'])->name('dashboard.nasabah');
     Route::get('/nasabah/tambah', [NasabahController::class, 'create'])->name('nasabah.create');
     Route::post('/nasabah/store', [NasabahController::class, 'store'])->name('nasabah.store');
+});
+
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+
+Route::middleware(['auth'])->group(function () {
+
+    // ========== ADMIN AREA ==========
+    Route::middleware(['role:admin'])->prefix('dashboard')->group(function () {
+        Route::get('/', fn() => view('dashboard.index'))->name('dashboard');
+        Route::get('/pegawai', [PegawaiController::class, 'index'])->name('dashboard.pegawai');
+        Route::get('/nasabah', [NasabahController::class, 'index'])->name('dashboard.nasabah');
+        Route::get('/simpanan', [SimpananAdminController::class, 'index'])->name('dashboard.simpanan');
+        Route::get('/simpanan/tambah', [SimpananAdminController::class, 'create'])->name('simpanan.create');
+        Route::post('/simpanan/store', [SimpananAdminController::class, 'store'])->name('simpanan.store');
+        Route::get('/simpanan/edit/{simpanan}', [SimpananAdminController::class, 'edit'])->name('simpanan.edit');
+        Route::post('/simpanan/update/{simpanan}', [SimpananAdminController::class, 'update'])->name('simpanan.update');
+        Route::delete('/simpanan/{simpanan}', [SimpananAdminController::class, 'destroy'])->name('simpanan.destroy');
+        Route::get('/laporan', [App\Http\Controllers\LaporanController::class, 'index'])->name('dashboard.laporan');
+        Route::get('/laporan/download', [App\Http\Controllers\LaporanController::class, 'download'])->name('laporan.download');
+        Route::post('/laporan/store', [LaporanController::class, 'store'])->name('laporan.store');
+        Route::get('/pinjaman', [PinjamanAdminController::class, 'index'])->name('dashboard.pinjaman');
+        Route::get('/pinjaman/tambah', [PinjamanAdminController::class, 'create'])->name('pinjaman.create');
+        Route::post('/pinjaman/store', [PinjamanAdminController::class, 'store'])->name('pinjaman.store');
+        Route::get('/pinjaman/edit/{pinjaman}', [PinjamanAdminController::class, 'edit'])->name('pinjaman.edit');
+        Route::post('/pinjaman/update/{pinjaman}', [PinjamanAdminController::class, 'update'])->name('pinjaman.update');
+        Route::delete('/pinjaman/{pinjaman}', [PinjamanAdminController::class, 'destroy'])->name('pinjaman.destroy');
+    });
+
+    // ========== NASABAH AREA ==========
+    Route::middleware(['role:nasabah'])->prefix('nasabah')->group(function () {
+        Route::get('/', fn() => view('nasabah.home'))->name('nasabah.home');
+        Route::get('/pinjaman', [PinjamanController::class, 'index'])->name('nasabah.pinjaman');
+    });
 });
 
 require __DIR__.'/auth.php';

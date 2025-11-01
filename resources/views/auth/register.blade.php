@@ -88,7 +88,6 @@
             <label for="role">Daftar Sebagai</label>
             <select name="role" id="role" required onchange="toggleJabatan()">
                 <option value="nasabah" selected>Nasabah</option>
-                <option value="admin">Admin</option>
             </select>
 
             <div id="jabatanField" style="display:none;">

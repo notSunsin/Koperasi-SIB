@@ -1,29 +1,32 @@
-@extends('layouts.app')
+@extends('layouts.dashboard')
 
 @section('content')
-<div class="container">
-    <h2 class="text-2xl font-bold mb-4">Daftar Simpanan</h2>
-    <a href="{{ route('simpanans.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded">Tambah Simpanan</a>
+    <h2>Data Simpanan</h2>
+    <button class="btn btn-add">+ Tambah Simpanan</button>
 
-    <table class="table-auto w-full mt-4 border">
+    <table class="table">
         <thead>
-            <tr class="bg-gray-200">
-                <th>Jenis</th>
-                <th>Jumlah</th>
+            <tr>
+                <th>No Transaksi</th>
                 <th>Tanggal</th>
-                <th>Nasabah</th>
+                <th>Anggota</th>
+                <th>Simpanan Pokok</th>
+                <th>Simpanan Wajib</th>
+                <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($data as $s)
             <tr>
-                <td>{{ $s->jenis }}</td>
-                <td>Rp {{ number_format($s->jumlah, 2) }}</td>
-                <td>{{ $s->tanggal }}</td>
-                <td>{{ $s->user->name }}</td>
+                <td>TRX001</td>
+                <td>2025-11-01</td>
+                <td>Rina Salsabila</td>
+                <td>Rp 1.000.000</td>
+                <td>Rp 500.000</td>
+                <td>
+                    <button class="btn btn-edit">Edit</button>
+                    <button class="btn btn-delete">Hapus</button>
+                </td>
             </tr>
-            @endforeach
         </tbody>
     </table>
-</div>
 @endsection

@@ -12,6 +12,9 @@ class PinjamanController extends Controller
         $user = auth()->user();
         $data = $user->role === 'admin' ? Pinjaman::all() : $user->pinjaman;
         return view('pinjaman.index', compact('data'));
+
+        $pinjaman = Pinjaman::where('user_id', auth()->id())->get();
+        return view('nasabah.pinjaman', compact('pinjaman'));
     }
 
     public function create()

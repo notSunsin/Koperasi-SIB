@@ -5,16 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Pinjaman extends Model
+class Laporan extends Model
 {
     use HasFactory;
-
-    protected $table = 'pinjamans'; // ✅ pastikan jamak dan sesuai migration
 
     protected $fillable = [
         'kode',
         'user_id',
         'uraian',
+        'debit',
         'kredit',
         'saldo',
     ];

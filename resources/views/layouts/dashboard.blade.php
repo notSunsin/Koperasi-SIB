@@ -10,10 +10,13 @@
             font-family: Arial, sans-serif;
             background-color: #f5f6fa;
         }
+
+        /* Layout utama */
         .container {
             display: flex;
             height: 100vh;
         }
+
         /* Sidebar */
         .sidebar {
             width: 230px;
@@ -23,10 +26,12 @@
             flex-direction: column;
             padding: 20px;
         }
+
         .sidebar h2 {
             text-align: center;
             margin-bottom: 30px;
         }
+
         .sidebar a {
             color: white;
             text-decoration: none;
@@ -35,35 +40,79 @@
             border-radius: 5px;
             display: block;
         }
-        .sidebar a:hover, .sidebar a.active {
+
+        .sidebar a:hover,
+        .sidebar a.active {
             background-color: #0b5ed7;
         }
+
+        /* Area Konten */
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            background-color: white;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* Tombol Logout */
+        .logout-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background-color: #b02a37;
+        }
+
+        /* Isi Konten */
         .content {
             flex: 1;
             padding: 25px;
             overflow-y: auto;
         }
+
+        /* Tabel dan tombol */
         .table {
             width: 100%;
             border-collapse: collapse;
             background: white;
             margin-top: 15px;
         }
+
         .table th, .table td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
         }
+
         .table th {
             background-color: #f0f0f0;
         }
+
         .btn {
-            padding: 6px 10px;
+            padding: 8px 14px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             color: white;
         }
+
         .btn-add { background-color: #198754; }
         .btn-edit { background-color: #ffc107; color: black; }
         .btn-delete { background-color: #dc3545; }
@@ -72,19 +121,53 @@
 <body>
 
 <div class="container">
+    <!-- Sidebar -->
     <div class="sidebar">
         <h2>Koperasi</h2>
-        <a href="{{ route('dashboard') }}">🏠 Beranda</a>
-        <a href="{{ route('dashboard.pegawai') }}">👨‍💼 Pegawai</a>
-        <a href="{{ route('dashboard.nasabah') }}" class="{{ request()->is('dashboard/nasabah') ? 'active' : '' }}">👥 Nasabah</a>
-        <a href="{{ route('dashboard.simpanan') }}">💰 Simpanan</a>
-        <a href="{{ route('dashboard.laporan') }}">📄 Laporan</a>
+
+        @if(Auth::user()->role === 'admin')
+            <a href="{{ route('dashboard') }}">🏠 Beranda</a>
+            <a href="{{ route('dashboard.pegawai') }}">👨‍💼 Pegawai</a>
+            <a href="{{ route('dashboard.nasabah') }}">👥 Nasabah</a>
+            <a href="{{ route('dashboard.simpanan') }}">💰 Simpanan</a>
+            <a href="{{ route('dashboard.pinjaman') }}">💳 Pinjaman</a>
+            <a href="{{ route('dashboard.laporan') }}">📄 Laporan</a>
+        @elseif(Auth::user()->role === 'nasabah')
+            <a href="{{ route('nasabah.home') }}">🏠 Beranda</a>
+            <a href="{{ route('nasabah.pinjaman') }}">💳 Pinjaman</a>
+        @endif
     </div>
 
-    <div class="content">
-        @yield('content')
+
+
+    <!-- Area Konten -->
+    <div class="content-wrapper">
+        <!-- Header -->
+        <div class="header">
+            <div style="margin-right: 20px; font-weight: bold; color:#333;">
+                👤 {{ Auth::user()->name }}
+            </div>
+            <form method="POST" action="{{ route('logout') }}" id="logoutForm">
+                @csrf
+                <button type="button" class="logout-btn" onclick="confirmLogout()">🚪 Logout</button>
+            </form>
+        </div>
+
+
+        <!-- Isi Dashboard -->
+        <div class="content">
+            @yield('content')
+        </div>
     </div>
 </div>
+
+<script>
+function confirmLogout() {
+    if (confirm('ente yakin mau logout?')) {
+        document.getElementById('logoutForm').submit();
+    }
+}
+</script>
 
 </body>
 </html>
